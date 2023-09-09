@@ -129,7 +129,7 @@ app.get('/api/shorturl/:number', async function(req, res) {
       const url = data.url;
       //console.log('url '+ url)
       res.redirect( url )
-      
+
     } else res.json({ error: 'invalid url' })
 
   })
@@ -146,7 +146,7 @@ app.get('/api/shorturl/:number', async function(req, res) {
 
 
 // form submit endpoint
-app.post('/api/shorturl/', async function(req, res) {
+app.post('/api/shorturl', async function(req, res) {
   let originalUrl = req.body.url
   originalUrl = originalUrl.replaceAll(/ +/g, '') // remove all space
 
