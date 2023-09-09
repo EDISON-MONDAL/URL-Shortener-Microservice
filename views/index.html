@@ -15,7 +15,7 @@
     <h1>URL Shortener Microservice</h1>
     <main>
       <section>
-        <form action="api/shorturl" method="POST">
+        <form action="api/shorturl/" method="POST">
           <fieldset>
             <legend>URL Shortener</legend>
             <label for="url_input">URL:</label>
@@ -24,9 +24,42 @@
           </fieldset>
         </form>
       </section>
+
+      <section>
+        <h1>Example Usage:</h1>
+        <a href="#" id="exampleURl"></a>
+
+        <h3>Will Redirect to:</h3>
+        <p>https://www.facebook.org/</p>
+      </section>
     </main>
     <footer>
-      <p>By <a href="https://www.freecodecamp.org/">freeCodeCamp</a></p>
+      <p>
+        By <button id="openLinksButton">EDISON MONDAL</button> For <a href="https://www.freecodecamp.org/">freeCodeCamp.org</a>
+      </p>
     </footer>
   </body>
+
+  <script>
+    const thisDomain = window.location.origin + "/api/shorturl/3"
+    
+    document.querySelector('#exampleURl').href = 'https://www.facebook.org/'
+    document.querySelector('#exampleURl').innerText = thisDomain
+
+
+
+        
+    const openLinksButton = document.getElementById("openLinksButton");
+
+    openLinksButton.addEventListener("click", function () {
+        // Open the first link in a new tab/window
+        window.open("https://web.facebook.com/profile.php?id=100009253036719", "_blank");
+
+        // Open the second link in a new tab/window with a slight delay
+        setTimeout(function () {
+          window.open("https://www.linkedin.com/in/edison-mondal-a60907216/", "_blank");
+        }, 100); // Delay 
+    });
+
+  </script>
 </html>

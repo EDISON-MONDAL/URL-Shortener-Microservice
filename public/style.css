@@ -44,3 +44,15 @@ input[type='text'] {
   width: 220px;
   text-align: center;
 }
+
+a, #openLinksButton {
+	color: #2574A9;
+}
+
+#openLinksButton {
+    background: none;
+    border: none;
+    text-decoration: underline;
+    font-size: 1em;
+    cursor: pointer;
+}
