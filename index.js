@@ -121,9 +121,8 @@ app.get('/', function(req, res) {
 
 
 // shorturl endpoint
-/*
-app.get('/api/shorturl/:number', async function(req, res) {
-  let shortUrlNumber = req.params.number
+app.get('/api/shorturl/:short_url', async function(req, res) {
+  let shortUrlNumber = req.params.short_url
 
 
   const findLastURLNumber = await require('./model/url_schema').findOne({ 
@@ -147,43 +146,7 @@ app.get('/api/shorturl/:number', async function(req, res) {
 
   
 });
-*/
-app.get('/api/shorturl/:short_url', async function(req, res) {
-  let shortUrlNumber = req.params.short_url;
 
-  const findURLdb = require('./model/url_schema').findOne({ 
-    shortURL: shortUrlNumber
-  });
-
-  findURLdb.select('url shortURL')
-
-  const getURL = await findURLdb.exec()
-
-  if (getURL) {
-    const url = getURL.url;
-    //console.log('url ' + url);
-    res.redirect(url);
-  } else {
-    res.json({ error: 'invalid url' });
-  }
-  /*
-  'url shortURL', function(error, data) {
-    if (error) {
-      // Handle any errors that occurred during the query
-      console.log('can\'t find short url ' + error);
-      res.status(500).send('Internal Server Error');
-    } else {
-      if (data) {
-        const url = data.url;
-        //console.log('url ' + url);
-        res.redirect(url);
-      } else {
-        res.json({ error: 'invalid url' });
-      }
-    }
-  }
-  */
-});
 
 
 
