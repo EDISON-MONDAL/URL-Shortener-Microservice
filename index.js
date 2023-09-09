@@ -148,8 +148,8 @@ app.get('/api/shorturl/:number', async function(req, res) {
   
 });
 */
-app.get('/api/shorturl/:number', async function(req, res) {
-  let shortUrlNumber = req.params.number;
+app.get('/api/shorturl/:short_url', async function(req, res) {
+  let shortUrlNumber = req.params.short_url;
 
   const findURLdb = require('./model/url_schema').findOne({ 
     shortURL: shortUrlNumber
