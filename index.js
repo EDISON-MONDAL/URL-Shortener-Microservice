@@ -121,7 +121,7 @@ app.get('/', function(req, res) {
 
 
 // shorturl endpoint
-app.get('/api/shorturl/:short_url', async function(req, res) {
+app.use('/api/shorturl/:short_url', async function(req, res) {
   let shortUrlNumber = req.params.short_url
 
 
@@ -171,9 +171,9 @@ app.post('/api/shorturl', async function(req, res) {
 
   if(!result && (protocall === 'https://www' || protocall === 'http://www') && firstOccurenceDot !== lastOccurenceDot  && (domainNameSlash != null || domainName != null) ) {
     // result false means no contamination
-    const test = await storeUrl( originalUrl )
     
-    res.json( test )
+    
+    res.json( await storeUrl( originalUrl ) )
   } else {    
     res.json({ error: 'invalid url' })
   }
