@@ -197,34 +197,19 @@ let currentShortUrl = 1;
 
 // Route to shorten a URL
 app.post('/api/shorturl', (req, res) => {
-  let url = req.body.url;
-  url = url.replaceAll(/ +/g, '') // remove all space
+  const url = req.body.url;
 
-  const pattern = /[^A-Za-z0-9-_.~%:/]/g; //check outside of those char
-  const result = pattern.test(url); // check unrecognized char
-
-  const firstOccurenceDot = url.indexOf(".")
-  const lastOccurenceDot = url.lastIndexOf(".")
-
-  const protocallHTTP = url.slice(0, 6)
-  const protocallHTTPs = url.slice(0, 7)
-  const domainNameSlash = url.slice( lastOccurenceDot, url.indexOf("/", lastOccurenceDot) )
-  const domainName = url.slice( lastOccurenceDot )
-  
-  if (!url) {
-    if(protocallHTTP !== 'http://' && protocallHTTPs !== 'https://'){
-      return res.status(400).json({ error: 'invalid url' });
-    }
-  }
   /*
-  if ( result ) {
-    // result true means contamination
-
+  if (!url) {
     return res.status(400).json({ error: 'invalid url' });
   }
   */
-  
-  //|| (protocall !== 'https://www' && protocall !== 'http://www') || firstOccurenceDot == lastOccurenceDot  || (domainNameSlash == null && domainName == null)
+
+  // Check if the URL is valid
+  const urlPattern = /^(http|https):\/\/(www\.)?[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}/;
+  if (!urlPattern.test(url)) {
+    return res.json({ error: 'invalid url' });
+  }
 
   
 
