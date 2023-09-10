@@ -173,8 +173,9 @@ app.post('/api/shorturl', async function(req, res) {
   if(!result && (protocall === 'https://www' || protocall === 'http://www') && firstOccurenceDot !== lastOccurenceDot  && (domainNameSlash != null || domainName != null) ) {
     // result false means no contamination
     
+    const result = await storeUrl( originalUrl )
     
-    res.json( await storeUrl( originalUrl ) )
+    res.json( { 'original_url': result['original_url'], 'short_url': result['short_url'] } )
   } else {    
     res.json({ 'error': 'invalid url' })
   }
