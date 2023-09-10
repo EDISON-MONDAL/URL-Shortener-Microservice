@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const app = express();
-//const mongoose = require('mongoose')
+const mongoose = require('mongoose')
 
 // Basic Configuration
 const port = process.env.PORT || 3000;
@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: true })); // for parsing application/x-ww
 app.use('/public', express.static(`${process.cwd()}/public`));
 
 
-/*
+
 //connect to mongoose
   mongoose.connect( process.env.mongodb_url)
   .then(()=>{
@@ -102,12 +102,12 @@ async function storeUrl(originalUrl){
 
     
 
-    return { original_url: originalUrl, short_url: urlNumber }
+    return { 'original_url': originalUrl, 'short_url': urlNumber }
   } else { //console.log('old')
-    return { original_url: searchedArray[0][0], short_url: searchedArray[0][1]}
+    return { 'original_url': searchedArray[0][0], 'short_url': searchedArray[0][1]}
   }
 }
-*/
+
 
 
 
@@ -120,7 +120,7 @@ app.get('/', function(req, res) {
 });
 
 
-/*
+
 // shorturl endpoint
 app.get('/api/shorturl/:short_url', async function(req, res) {
   let shortUrlNumber = req.params.short_url
@@ -136,7 +136,7 @@ app.get('/api/shorturl/:short_url', async function(req, res) {
       //console.log('url '+ url)
       res.redirect( url )
 
-    } else res.json({ error: 'invalid url' })
+    } else res.json({ 'error': 'invalid url' })
 
   })
   .catch(error => {
@@ -176,14 +176,14 @@ app.post('/api/shorturl', async function(req, res) {
     
     res.json( await storeUrl( originalUrl ) )
   } else {    
-    res.json({ error: 'invalid url' })
+    res.json({ 'error': 'invalid url' })
   }
 });
-*/
 
 
 
 
+/*
 // In-memory storage for URL mappings
 const urlMap = new Map();
 let currentShortUrl = 1;
@@ -215,7 +215,7 @@ app.get('/api/shorturl/:short_url', (req, res) => {
     res.status(404).json({ error: 'Short URL not found' });
   }
 });
-
+*/
 
 
 
