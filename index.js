@@ -211,11 +211,14 @@ app.post('/api/shorturl', (req, res) => {
   const domainName = url.slice( lastOccurenceDot )
   
   if (!url) {
-    //return res.status(400).json({ error: 'invalid url' });
+    
     if ( result ) {
       // result true means contamination
-  
-      return res.status(400).json({ error: 'invalid url' });
+      
+      if(protocall !== 'https://www' && protocall !== 'http://www'){
+        return res.status(400).json({ error: 'invalid url' });
+      }
+      
     }
   } 
   /*
