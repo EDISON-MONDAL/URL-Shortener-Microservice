@@ -190,7 +190,7 @@ let currentShortUrl = 1;
 
 // Route to shorten a URL
 app.post('/api/shorturl', (req, res) => {
-  const { url } = req.body;
+  const url = req.body.url;
 
   if (!url) {
     return res.status(400).json({ error: 'invalid url' });
@@ -199,7 +199,8 @@ app.post('/api/shorturl', (req, res) => {
   const short_url = currentShortUrl++;
   urlMap.set(short_url, url);
 
-  res.json({ url, short_url });
+  console.log(url)
+  res.json({ 'original_url': url, 'short_url': short_url });
 });
 
 
