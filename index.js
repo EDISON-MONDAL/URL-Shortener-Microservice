@@ -109,92 +109,6 @@ async function storeUrl(originalUrl){
   }
 }*/
 
-//text
-function storeUrl(originalUrl, callbakc){
-  
-  let alreadyStored = false;
-  let searchedArray = []
-  let urlNumber = 0
-
-
-  const findLastURLNumber =  require('./model/url_schema').find({ 
-    
-  }, 'shortURL')
-  .sort({ shortURL: -1 }) // Assuming you want to sort by _id in descending order
-  .limit(1)
-  .then(data => {
-
-    if (data.length > 0) {
-      urlNumber = data[0].shortURL;
-      //console.log('find pervious url no '+ urlNumber)
-    } //else console.log('cant find pervious url no '+ urlNumber)
-
-  })
-  .catch(error => {
-    // Handle any errors that occurred during the query
-    console.log('can\'t find last url number ' + error)     
-  })
-
-
-
-  setTimeout(()=>{
-
-  const findURLInMongoDB =  require('./model/url_schema').findOne({ 
-    'url' : originalUrl
-
-  }, 'url shortURL')
-  .then(data => {
-
-    if(data){
-      alreadyStored = true
-      searchedArray.push([originalUrl, data.shortURL])
-    }
-
-  })
-  .catch(error => {
-    // Handle any errors that occurred during the query
-    console.log('couldn\'t find in db ' + error)     
-  })
-
-  }, 500)
-
-
-  setTimeout(()=>{
-
-  if( !alreadyStored ){ //console.log('new')
-
-    urlNumber++
-       
-    // mongo db put
-    const putInMongo = new require('./model/url_schema')({
-      url: originalUrl,
-      shortURL: urlNumber
-    })
-
-    try {      
-      const objectId = putInMongo.save()
-      
-      //console.log(objectId.id)      
-      
-    } catch(err) {     
-      console.log('can\'t create url shortner in db ' + err.message)
-    }
-    // mongo db put
-    
-    
-
-    return callbakc({ 'original_url': originalUrl, 'short_url': urlNumber })
-  } else { //console.log('old')
-    return callbakc({ 'original_url': searchedArray[0][0], 'short_url': searchedArray[0][1]})
-  }
-
-  }, 1000)
-}
-//test
-
-
-
-
 
 
 
@@ -202,75 +116,6 @@ function storeUrl(originalUrl, callbakc){
 app.get('/', function(req, res) {
   res.sendFile(process.cwd() + '/views/index.html');
 });
-
-// test
-/*
-app.post('/api/shorturl',  function(req, res) {
-  let originalUrl = req.body.url
-  originalUrl = originalUrl.replaceAll(/ +/g, '') // remove all space
-
-  const pattern = /[^A-Za-z0-9-_.~%:/]/g;
-  const result = pattern.test(originalUrl); // check unrecognized char
-
-  const firstOccurenceDot = originalUrl.indexOf(".")
-  const lastOccurenceDot = originalUrl.lastIndexOf(".")
-
-  const protocall = originalUrl.slice(0, firstOccurenceDot)
-  const domainNameSlash = originalUrl.slice( lastOccurenceDot, originalUrl.indexOf("/", lastOccurenceDot) )
-  const domainName = originalUrl.slice( lastOccurenceDot )
-
-  
-
-  if(!result && (protocall === 'https://www' || protocall === 'http://www') && firstOccurenceDot !== lastOccurenceDot  && (domainNameSlash != null || domainName != null) ) {
-    // result false means no contamination
-    
-    //const result = storeUrl( originalUrl )
-    // /*
-    storeUrl( originalUrl ).then(result => {
-      res.json( { 'original_url': result['original_url'], 'short_url': result['short_url'] } )
-    })
-    // /
-    
-    //res.json( { 'original_url': result['original_url'], 'short_url': result['short_url'] } )
-
-    storeUrl( originalUrl, (result) => {
-      res.json( { 'original_url': result['original_url'], 'short_url': result['short_url'] } )
-    })
-
-  } else {    
-    res.json({ 'error': 'invalid url' })
-  }
-});
-
-
-
-app.get('/api/shorturl/:short_url', function(req, res) {
-  let shortUrlNumber = req.params.short_url
-
-
-  const findLastURLNumber = require('./model/url_schema').findOne({ 
-    shortURL: shortUrlNumber
-  }, 'url shortURL')
-  .then(data => {
-
-    if (data) {
-      const url = data.url;
-      //console.log('url '+ url)
-      res.redirect( url )
-
-    } else res.json({ 'error': 'invalid url' })
-
-  })
-  .catch(error => {
-    // Handle any errors that occurred during the query
-    console.log('can\'t find short url ' + error)     
-  })
-
-
-  
-});
-*/
-// test
 
 
 
@@ -351,18 +196,34 @@ const urlArr = []
 let currentShortUrl = 1;
 
 // Route to shorten a URL
-app.post('/api/shorturl', (req, res) => {
-  const url = req.body.url;
+app.post('/api/shorturl', (req, res) => {  
+  let url = req.body.url;
+  url = url.replaceAll(/ +/g, '') // remove all space
 
-  if (!url) {
-    return res.status(400).json({ error: 'invalid url' });
-  }
+  const pattern = /[^A-Za-z0-9-_.~%:/]/g;
+  const result = pattern.test(url); // check unrecognized char
 
-  const short_url = currentShortUrl++;
-  urlArr.push([url, short_url])
+  const firstOccurenceDot = url.indexOf(".")
+  const lastOccurenceDot = url.lastIndexOf(".")
+
+  const protocall = url.slice(0, firstOccurenceDot)
+  const domainNameSlash = url.slice( lastOccurenceDot, url.indexOf("/", lastOccurenceDot) )
+  const domainName = url.slice( lastOccurenceDot )
 
   
-  res.json({ 'original_url': url, 'short_url': short_url });
+
+  if(!result && (protocall === 'https://www' || protocall === 'http://www') && firstOccurenceDot !== lastOccurenceDot  && (domainNameSlash != null || domainName != null) ) {
+    // result false means no contamination
+
+    const short_url = currentShortUrl++;
+    urlArr.push([url, short_url])
+    
+    res.json({ 'original_url': url, 'short_url': short_url });
+
+  } else {    
+    res.json({ 'error': 'invalid url' })
+  }
+  
 });
 
 
