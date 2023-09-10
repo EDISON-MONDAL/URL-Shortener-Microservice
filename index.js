@@ -144,7 +144,9 @@ app.get('/api/shorturl/:short_url', async function(req, res) {
     console.log('can\'t find short url ' + error)     
   })
 
-  res.redirect( dbURL )
+  //res.redirect( dbURL )
+  res.status(302).location(dbURL).send();
+
   
 });
 
