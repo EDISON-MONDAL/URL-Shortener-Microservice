@@ -214,13 +214,13 @@ app.post('/api/shorturl', (req, res) => {
     return res.status(400).json({ error: 'invalid url' });
   } 
   
-  if ( result || (protocall !== 'https://www' && protocall !== 'http://www') || firstOccurenceDot == lastOccurenceDot  || (domainNameSlash == null && domainName == null)) {
+  if ( result ) {
     // result true means contamination
 
     return res.status(400).json({ error: 'invalid url' });
   }
   
-  
+  //|| (protocall !== 'https://www' && protocall !== 'http://www') || firstOccurenceDot == lastOccurenceDot  || (domainNameSlash == null && domainName == null)
 
   
 
