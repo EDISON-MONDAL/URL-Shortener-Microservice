@@ -264,7 +264,7 @@ const urlMap = new Map();
 let currentShortUrl = 1;
 
 // Route to shorten a URL
-app.post('/api/shorturl', async (req, res) => {
+app.post('/api/shorturl', (req, res) => {
   const url = req.body.url;
 
   if (!url) {
