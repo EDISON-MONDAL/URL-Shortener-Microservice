@@ -123,7 +123,7 @@ app.get('/', function(req, res) {
 // shorturl endpoint
 app.get('/api/shorturl/:short_url', async function(req, res) {
   let shortUrlNumber = req.params.short_url
-
+  let dbURL = null
 
   const findLastURLNumber = await require('./model/url_schema').findOne({ 
     shortURL: shortUrlNumber
@@ -132,8 +132,9 @@ app.get('/api/shorturl/:short_url', async function(req, res) {
 
     if (data) {
       const url = data.url;
+      dbURL = url
       //console.log('url '+ url)
-      res.redirect( url )
+      //res.redirect( url )
 
     } else res.json({ error: 'invalid url' })
 
@@ -143,7 +144,7 @@ app.get('/api/shorturl/:short_url', async function(req, res) {
     console.log('can\'t find short url ' + error)     
   })
 
-
+  res.redirect( dbURL )
   
 });
 
