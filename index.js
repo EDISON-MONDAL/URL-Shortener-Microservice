@@ -374,7 +374,7 @@ app.get('/api/shorturl/:short_url', (req, res) => {
   if (original_url) {
     res.redirect(original_url);
   } else {
-    res.status(404).json({ error: 'Short URL not found' });
+    res.status(404).json({ error: 'invalid url' });
   }
 });
 
