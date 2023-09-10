@@ -212,7 +212,11 @@ app.post('/api/shorturl', (req, res) => {
   
   if (!url) {
     return res.status(400).json({ error: 'invalid url' });
-  } 
+  } else if ( result ) {
+    // result true means contamination
+
+    return res.status(400).json({ error: 'invalid url' });
+  }
   /*
   if ( result ) {
     // result true means contamination
