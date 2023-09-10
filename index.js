@@ -164,7 +164,7 @@ function storeUrl(originalUrl, callbakc){
   if( !alreadyStored ){ //console.log('new')
 
     urlNumber++
-    /*    
+       
     // mongo db put
     const putInMongo = new require('./model/url_schema')({
       url: originalUrl,
@@ -180,7 +180,7 @@ function storeUrl(originalUrl, callbakc){
       console.log('can\'t create url shortner in db ' + err.message)
     }
     // mongo db put
-    */
+    
     
 
     return callbakc({ 'original_url': originalUrl, 'short_url': urlNumber })
