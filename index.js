@@ -347,7 +347,8 @@ app.post('/api/shorturl', async function(req, res) {
 
 
 // In-memory storage for URL mappings
-const urlMap = new Map();
+//const urlMap = new Map();
+const urlArr = []
 let currentShortUrl = 1;
 
 // Route to shorten a URL
@@ -359,7 +360,8 @@ app.post('/api/shorturl', (req, res) => {
   }
 
   const short_url = currentShortUrl++;
-  urlMap.set(short_url, url);
+  //urlMap.set(short_url, url);
+  urlArr.push([url, short_url])
 
   console.log(url)
   res.json({ 'original_url': url, 'short_url': short_url });
@@ -369,7 +371,16 @@ app.post('/api/shorturl', (req, res) => {
 // Route to redirect to the original URL
 app.get('/api/shorturl/:short_url', (req, res) => {
   const { short_url } = req.params;
-  const original_url = urlMap.get(Number(short_url));
+  //const original_url = urlMap.get(Number(short_url));
+
+  let original_url = ''
+
+  for (let i = 0; i < urlArr.length; i++) {
+    if (urlArr[i].includes( Number(short_url) )) {
+      original_url = urlArr[i][1]
+      break;
+    }
+  }
 
   if (original_url) {
     res.redirect(original_url);
