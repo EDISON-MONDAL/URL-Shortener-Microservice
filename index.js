@@ -121,7 +121,7 @@ app.get('/', function(req, res) {
 
 
 // shorturl endpoint
-app.use('/api/shorturl/:short_url', async function(req, res) {
+app.get('/api/shorturl/:short_url', async function(req, res) {
   let shortUrlNumber = req.params.short_url
 
 
