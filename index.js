@@ -145,7 +145,11 @@ app.get('/api/shorturl/:short_url', async function(req, res) {
   })
 
   //res.redirect( dbURL )
-  res.status(302).location(dbURL).send();
+  
+  //res.status(302).location(dbURL).send();
+
+  res.setHeader("Location", dbURL);
+  res.status(302).send();
 
   
 });
