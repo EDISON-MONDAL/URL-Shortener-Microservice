@@ -32,6 +32,7 @@ app.use('/public', express.static(`${process.cwd()}/public`));
 
 
 // database
+/*
 async function storeUrl(originalUrl){
   
   let alreadyStored = false;
@@ -106,7 +107,90 @@ async function storeUrl(originalUrl){
   } else { //console.log('old')
     return { 'original_url': searchedArray[0][0], 'short_url': searchedArray[0][1]}
   }
+}*/
+
+//text
+function storeUrl(originalUrl, callbakc){
+  
+  let alreadyStored = false;
+  let searchedArray = []
+  let urlNumber = 0
+
+
+  const findLastURLNumber =  require('./model/url_schema').find({ 
+    
+  }, 'shortURL')
+  .sort({ shortURL: -1 }) // Assuming you want to sort by _id in descending order
+  .limit(1)
+  .then(data => {
+
+    if (data.length > 0) {
+      urlNumber = data[0].shortURL;
+      //console.log('find pervious url no '+ urlNumber)
+    } //else console.log('cant find pervious url no '+ urlNumber)
+
+  })
+  .catch(error => {
+    // Handle any errors that occurred during the query
+    console.log('can\'t find last url number ' + error)     
+  })
+
+
+
+  setTimeout(()=>{
+
+  const findURLInMongoDB =  require('./model/url_schema').findOne({ 
+    'url' : originalUrl
+
+  }, 'url shortURL')
+  .then(data => {
+
+    if(data){
+      alreadyStored = true
+      searchedArray.push([originalUrl, data.shortURL])
+    }
+
+  })
+  .catch(error => {
+    // Handle any errors that occurred during the query
+    console.log('couldn\'t find in db ' + error)     
+  })
+
+  }, 500)
+
+
+  setTimeout(()=>{
+
+  if( !alreadyStored ){ //console.log('new')
+
+    urlNumber++
+    /*    
+    // mongo db put
+    const putInMongo = new require('./model/url_schema')({
+      url: originalUrl,
+      shortURL: urlNumber
+    })
+
+    try {      
+      const objectId = putInMongo.save()
+      
+      //console.log(objectId.id)      
+      
+    } catch(err) {     
+      console.log('can\'t create url shortner in db ' + err.message)
+    }
+    // mongo db put
+    */
+    
+
+    return callbakc({ 'original_url': originalUrl, 'short_url': urlNumber })
+  } else { //console.log('old')
+    return callbakc({ 'original_url': searchedArray[0][0], 'short_url': searchedArray[0][1]})
+  }
+
+  }, 1000)
 }
+//test
 
 
 
@@ -139,13 +223,18 @@ app.post('/api/shorturl',  function(req, res) {
   if(!result && (protocall === 'https://www' || protocall === 'http://www') && firstOccurenceDot !== lastOccurenceDot  && (domainNameSlash != null || domainName != null) ) {
     // result false means no contamination
     
-    const result = storeUrl( originalUrl )
-
+    //const result = storeUrl( originalUrl )
+    /*
     storeUrl( originalUrl ).then(result => {
       res.json( { 'original_url': result['original_url'], 'short_url': result['short_url'] } )
     })
+    */
     
     //res.json( { 'original_url': result['original_url'], 'short_url': result['short_url'] } )
+
+    storeUrl( originalUrl, (result) => {
+      res.json( { 'original_url': result['original_url'], 'short_url': result['short_url'] } )
+    })
 
   } else {    
     res.json({ 'error': 'invalid url' })
