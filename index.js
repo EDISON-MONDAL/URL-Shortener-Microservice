@@ -209,18 +209,19 @@ app.post('/api/shorturl', (req, res) => {
   const protocall = url.slice(0, firstOccurenceDot)
   const domainNameSlash = url.slice( lastOccurenceDot, url.indexOf("/", lastOccurenceDot) )
   const domainName = url.slice( lastOccurenceDot )
-  
+  /*
   if (!url) {
     return res.status(400).json({ error: 'invalid url' });
   }
+  */
   
-  /*
-  if (result || (protocall !== 'https://www' && protocall !== 'http://www') || firstOccurenceDot == lastOccurenceDot  || (domainNameSlash == null && domainName == null)) {
+  
+  if ( !url && result || (protocall !== 'https://www' && protocall !== 'http://www') || firstOccurenceDot == lastOccurenceDot  || (domainNameSlash == null && domainName == null)) {
     // result true means contamination
 
     return res.status(400).json({ error: 'invalid url' });
   }
-  */
+  
   
 
   /*
