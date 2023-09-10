@@ -120,6 +120,40 @@ app.get('/', function(req, res) {
 });
 
 // test
+app.post('/api/shorturl',  function(req, res) {
+  let originalUrl = req.body.url
+  originalUrl = originalUrl.replaceAll(/ +/g, '') // remove all space
+
+  const pattern = /[^A-Za-z0-9-_.~%:/]/g;
+  const result = pattern.test(originalUrl); // check unrecognized char
+
+  const firstOccurenceDot = originalUrl.indexOf(".")
+  const lastOccurenceDot = originalUrl.lastIndexOf(".")
+
+  const protocall = originalUrl.slice(0, firstOccurenceDot)
+  const domainNameSlash = originalUrl.slice( lastOccurenceDot, originalUrl.indexOf("/", lastOccurenceDot) )
+  const domainName = originalUrl.slice( lastOccurenceDot )
+
+  
+
+  if(!result && (protocall === 'https://www' || protocall === 'http://www') && firstOccurenceDot !== lastOccurenceDot  && (domainNameSlash != null || domainName != null) ) {
+    // result false means no contamination
+    
+    const result = storeUrl( originalUrl )
+
+    storeUrl( originalUrl ).then(result => {
+      res.json( { 'original_url': result['original_url'], 'short_url': result['short_url'] } )
+    })
+    
+    //res.json( { 'original_url': result['original_url'], 'short_url': result['short_url'] } )
+
+  } else {    
+    res.json({ 'error': 'invalid url' })
+  }
+});
+
+
+
 app.get('/api/shorturl/:short_url', function(req, res) {
   let shortUrlNumber = req.params.short_url
 
