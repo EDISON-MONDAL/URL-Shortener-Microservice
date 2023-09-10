@@ -363,7 +363,7 @@ app.post('/api/shorturl', (req, res) => {
   //urlMap.set(short_url, url);
   urlArr.push([url, short_url])
 
-  console.log(url)
+  
   res.json({ 'original_url': url, 'short_url': short_url });
 });
 
@@ -372,12 +372,12 @@ app.post('/api/shorturl', (req, res) => {
 app.get('/api/shorturl/:short_url', (req, res) => {
   const { short_url } = req.params;
   //const original_url = urlMap.get(Number(short_url));
-
+  
   let original_url = ''
 
   for (let i = 0; i < urlArr.length; i++) {
     if (urlArr[i].includes( Number(short_url) )) {
-      original_url = urlArr[i][1]
+      original_url = urlArr[i][0]
       break;
     }
   }
