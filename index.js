@@ -193,7 +193,7 @@ app.post('/api/shorturl', (req, res) => {
   const { url } = req.body;
 
   if (!url) {
-    return res.status(400).json({ error: 'Missing original_url' });
+    return res.status(400).json({ error: 'invalid url' });
   }
 
   const short_url = currentShortUrl++;
