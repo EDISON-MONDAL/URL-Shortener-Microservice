@@ -206,12 +206,13 @@ app.post('/api/shorturl', (req, res) => {
   const firstOccurenceDot = url.indexOf(".")
   const lastOccurenceDot = url.lastIndexOf(".")
 
-  const protocall = url.slice(0, firstOccurenceDot)
+  const protocallHTTP = url.slice(0, 6)
+  const protocallHTTPs = url.slice(0, 7)
   const domainNameSlash = url.slice( lastOccurenceDot, url.indexOf("/", lastOccurenceDot) )
   const domainName = url.slice( lastOccurenceDot )
   
   if (!url) {
-    if(protocall !== 'https://www' && protocall !== 'http://www'){
+    if(protocallHTTP !== 'http://' && protocallHTTPs !== 'https://'){
       return res.status(400).json({ error: 'invalid url' });
     }
   }
