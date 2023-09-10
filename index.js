@@ -215,9 +215,7 @@ app.post('/api/shorturl', (req, res) => {
   }
   */
 
-  const short_url = currentShortUrl++;
-  urlArr.push([url, short_url])
-
+  /*
   if(!result && (protocall === 'https://www' || protocall === 'http://www') && firstOccurenceDot !== lastOccurenceDot  && (domainNameSlash != null || domainName != null) ) {
     // result false means no contamination
     
@@ -225,13 +223,19 @@ app.post('/api/shorturl', (req, res) => {
 
   } else {    
     return res.json({ 'error': 'invalid url' })
+  }*/
+
+  if(result && (protocall !== 'https://www' || protocall !== 'http://www') && firstOccurenceDot == lastOccurenceDot  && (domainNameSlash == null || domainName == null) ) {
+    // result true means contamination
+    return res.json({ 'error': 'invalid url' })
+
   }
 
-  //const short_url = currentShortUrl++;
-  //urlArr.push([url, short_url])
+  const short_url = currentShortUrl++;
+  urlArr.push([url, short_url])
 
   
-  //res.json({ 'original_url': url, 'short_url': short_url });
+  res.json({ 'original_url': url, 'short_url': short_url });
 });
 
 
