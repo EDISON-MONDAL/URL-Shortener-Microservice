@@ -223,10 +223,10 @@ app.post('/api/shorturl', (req, res) => {
   urlArr.push([url, short_url])
 
   
-  return res.json({ 'original_url': url, 'short_url': short_url });
+  res.json({ 'original_url': url, 'short_url': short_url });
 
   } else {    
-    return res.json({ 'error': 'invalid url' })
+    res.json({ 'error': 'invalid url' })
   }
   /*
   if(result && (protocall !== 'https://www' || protocall !== 'http://www') && firstOccurenceDot == lastOccurenceDot  && (domainNameSlash == null || domainName == null) ) {
