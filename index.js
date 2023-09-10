@@ -203,6 +203,13 @@ app.post('/api/shorturl', (req, res) => {
   const pattern = /[^A-Za-z0-9-_.~%:/]/g;
   const result = pattern.test(url); // check unrecognized char
 
+  const firstOccurenceDot = url.indexOf(".")
+  const lastOccurenceDot = url.lastIndexOf(".")
+
+  const protocall = url.slice(0, firstOccurenceDot)
+  const domainNameSlash = url.slice( lastOccurenceDot, url.indexOf("/", lastOccurenceDot) )
+  const domainName = url.slice( lastOccurenceDot )
+
   if (!url) {
     return res.status(400).json({ error: 'invalid url' });
   }
