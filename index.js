@@ -200,7 +200,7 @@ app.post('/api/shorturl', (req, res) => {
   let url = req.body.url;
   url = url.replaceAll(/ +/g, '') // remove all space
 
-  const pattern = /[^A-Za-z0-9-_.~%:/]/g;
+  const pattern = /[^A-Za-z0-9-_.~%:/]/g; //check outside of those char
   const result = pattern.test(url); // check unrecognized char
 
   const firstOccurenceDot = url.indexOf(".")
@@ -215,7 +215,9 @@ app.post('/api/shorturl', (req, res) => {
   }
   */
 
-  if (!result || (protocall === 'https://www' || protocall === 'http://www')) {
+  if (result || (protocall !== 'https://www' && protocall !== 'http://www') || firstOccurenceDot == lastOccurenceDot  || (domainNameSlash == null && domainName == null)) {
+    // result true means contamination
+
     return res.status(400).json({ error: 'invalid url' });
   }
   
