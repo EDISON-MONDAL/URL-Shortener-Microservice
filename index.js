@@ -198,6 +198,10 @@ let currentShortUrl = 1;
 // Route to shorten a URL
 app.post('/api/shorturl', (req, res) => {
   let url = req.body.url;
+  url = url.replaceAll(/ +/g, '') // remove all space
+
+  const pattern = /[^A-Za-z0-9-_.~%:/]/g;
+  const result = pattern.test(url); // check unrecognized char
 
   if (!url) {
     return res.status(400).json({ error: 'invalid url' });
