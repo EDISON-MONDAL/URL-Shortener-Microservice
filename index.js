@@ -120,7 +120,7 @@ app.get('/', function(req, res) {
 });
 
 
-
+/*
 // shorturl endpoint
 app.get('/api/shorturl/:short_url', async function(req, res) {
   let shortUrlNumber = req.params.short_url
@@ -254,11 +254,11 @@ app.post('/api/shorturl', async function(req, res) {
     res.json({ 'error': 'invalid url' })
   }
 });
+*/
 
 
 
 
-/*
 // In-memory storage for URL mappings
 const urlMap = new Map();
 let currentShortUrl = 1;
@@ -290,7 +290,7 @@ app.get('/api/shorturl/:short_url', (req, res) => {
     res.status(404).json({ error: 'Short URL not found' });
   }
 });
-*/
+
 
 
 
