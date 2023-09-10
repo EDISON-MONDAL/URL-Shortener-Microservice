@@ -204,6 +204,7 @@ app.get('/', function(req, res) {
 });
 
 // test
+/*
 app.post('/api/shorturl',  function(req, res) {
   let originalUrl = req.body.url
   originalUrl = originalUrl.replaceAll(/ +/g, '') // remove all space
@@ -224,11 +225,11 @@ app.post('/api/shorturl',  function(req, res) {
     // result false means no contamination
     
     //const result = storeUrl( originalUrl )
-    /*
+    // /*
     storeUrl( originalUrl ).then(result => {
       res.json( { 'original_url': result['original_url'], 'short_url': result['short_url'] } )
     })
-    */
+    // /
     
     //res.json( { 'original_url': result['original_url'], 'short_url': result['short_url'] } )
 
@@ -268,10 +269,15 @@ app.get('/api/shorturl/:short_url', function(req, res) {
 
   
 });
-
+*/
 // test
 
+
+
 /*
+//my method
+
+
 // shorturl endpoint
 app.get('/api/shorturl/:short_url', async function(req, res) {
   let shortUrlNumber = req.params.short_url
@@ -336,8 +342,8 @@ app.post('/api/shorturl', async function(req, res) {
 
 
 
-/*
-chat gpt method
+
+//chat gpt method
 
 
 // In-memory storage for URL mappings
@@ -371,7 +377,7 @@ app.get('/api/shorturl/:short_url', (req, res) => {
     res.status(404).json({ error: 'Short URL not found' });
   }
 });
-*/
+
 
 
 
