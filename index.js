@@ -188,7 +188,7 @@ app.post('/api/shorturl', async function(req, res) {
 
 
 
-//chat gpt method
+//without database
 
 
 // In-memory storage for URL mappings
